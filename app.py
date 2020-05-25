@@ -28,16 +28,16 @@ def index():
 @app.route('/login', methods=['GET','POST'])
 def login():
     error = None
-    if request.method == "POST"
-    cursor = get_db().cursor()
-    #gets cursor and compares the credentials
-    find_user = ("SELECT * FROM users WHERE username = ? AND password = ?")
-    cursor.execute(find_user,[(username),(password)])
-    results = cursor.fetchall()
+    if request.method == "POST":
+        cursor = get_db().cursor()
+        #gets cursor and compares the credentials
+        find_user = ("SELECT * FROM users WHERE username = ? AND password = ?")
+        cursor.execute(find_user,[(username),(password)])
+        results = cursor.fetchall()
 
     if results:
         logged = True
-    
+
     else:
         logged = False
 
