@@ -39,14 +39,15 @@ def login():
         find_user = ("SELECT * FROM users WHERE username = ? AND password = ?")
         cursor.execute(find_user,[(username),(password)])
         results = cursor.fetchall()
+
         print("results")
+        
         if results:
             logged = True
             return redirect(url_for("dashboard"))
         else:
             logged = False
-            return redirect(url_for("dashboard"))
-    return render_template('login.html')
+    return render_template("login.html")
 
 
 
