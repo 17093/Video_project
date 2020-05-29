@@ -64,7 +64,6 @@ def signup():
 def dashboard():
     if "user" in session:
         user = session["user"]
-        return f"<h1> logged in as {user}</h1>"
     
     return render_template('dashboard.html')
     
