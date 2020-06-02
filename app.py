@@ -62,10 +62,13 @@ def signup():
 
 @app.route('/dashboard')
 def dashboard():
+    username = ""
     if "user" in session:
-        user = session["user"]
+        username = session["user"]
     
-    return render_template('dashboard.html')
+        return render_template('dashboard.html', user = username)
+    
+    return redirect(url_for("login",))
     
 #will logout users and redirect to login page.
 @app.route('/logout')
