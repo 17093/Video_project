@@ -1,4 +1,6 @@
 #Video sorting application made by Kevin Kang
+
+#ex https://www.w3schools.com/w3css/default.asp
 from flask import Flask, render_template, g, request, redirect, url_for, session
 import sqlite3
 from datetime import timedelta
