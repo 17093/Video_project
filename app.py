@@ -57,7 +57,9 @@ def login():
             return redirect(url_for("dashboard"))
         #if user is already logged in, it will redirect to dashboard.
         #if not, it will reload login.html.
-    return render_template("login.html")
+        else:
+            error = "Invalid Credentials, Please try again"
+    return render_template("login.html", error = error)
 
 
 
@@ -81,7 +83,7 @@ def dashboard():
 def logout():
     Logged = False
     session.pop("user", None)
-    return redirect(url_for("login"))
+    return redirect(url_for("index"))
     
 
 if __name__ == '__main__' :

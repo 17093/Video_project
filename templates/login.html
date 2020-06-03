@@ -4,20 +4,23 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
     <title>Login</title>
 </head>
 <body>
-    <div class="container">
-        <h1>Please login</h1>
-        <br>
-        <form action="/login"  method="post">
-            <input type="text" placeholder="Username" name="username" value="{{request.form.username}}">
-            <input type="password" placeholder="Password" name="password" value="{{request.form.password}}">
-            <input class="btn btn default" type="submit" value="Login">
-        </form>
-        {%if error%}
-            <p class="error"><strong>Error:</strong> {{ error }}</p>
-        {% endif %}
+    <div class="w3-container">
+        <div style = "height: 300px; "class="w3-panel w3-blue w3-round-xlarge w3-display-middle w3-padding">
+            <h1>Please login</h1>
+            <br>
+            <form action="/login"  method="post">
+                <input class="w3-round-large " type="text" placeholder="Username" name="username" value="{{request.form.username}}">
+                <input class="w3-round-large" type="password" placeholder="Password" name="password" value="{{request.form.password}}">
+                <input class="btn btn default " type="submit" value="Login">
+            </form>
+            {%if error%}
+                <p class="error"><strong>Error:</strong> {{ error }}</p>
+            {% endif %}
+        </div>
     </div>
 </body>
 </html>
