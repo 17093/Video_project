@@ -1,8 +1,16 @@
+<h1>Dashboarrd</h1>
 {% extends 'layout.html' %}
 {% block content %}
-<h1>Dashboarrd</h1>
 <body>
-        <iframe width="560" height="315" src="https://www.youtube.com/embed/-VSGCs-FfUQ" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
-        <iframe width="560" height="315" src="https://www.youtube.com/embed/wOAD4gI_xJo" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
-    </body>
+    <div class = "w3-sidebar">
+        <h3>literal sidebar</h3>
+    </div>
+    <div>
+        <div style="margin-left:25%" >
+            {% for url in urls %}
+                <iframe width="560" height="315" src="https://www.youtube.com/embed/{{ url[0] }}" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+            {% endfor %}
+        </div>
+    </div>
+</body>
 {% endblock %}

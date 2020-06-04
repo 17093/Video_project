@@ -73,8 +73,12 @@ def dashboard():
     if "user" in session:
         username = session["user"]
         Logged = True
+        cursor = get_db().cursor()
+        cursor.execute("SELECT url FROM url")
+        results = cursor.fetchall()
+
     
-        return render_template('dashboard.html', user = username)
+        return render_template('dashboard.html', user = username, urls = results)
     
     return redirect(url_for("login"))
     
