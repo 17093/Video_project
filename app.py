@@ -74,7 +74,7 @@ def dashboard():
         username = session["user"]
         Logged = True
         cursor = get_db().cursor()
-        cursor.execute("SELECT url FROM url")
+        cursor.execute("SELECT * FROM url")
         results = cursor.fetchall()
 
     

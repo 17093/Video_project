@@ -15,8 +15,9 @@
     <div class = "w3-display-container w3-cell w3-cell-top w3-green" style= "height:5000px">
         <div class = " w3-cell-row w3-margin">
             {% for url in urls %}
-                <iframe width="560" height="315" src="https://www.youtube.com/embed/{{ url[0] }}" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
-                <p class = "w3-margin">{{ url[1] }}</p>
+                <iframe width="560" height="315" src="https://www.youtube.com/embed/{{ url[1] }}" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+                <h1>{{ url[2] }}</h1>
+                <h3>{{ url[3] }}</h3>
             {% endfor %}
         </div>
     </div>
