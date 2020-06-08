@@ -1,12 +1,14 @@
-<h1>Dashboarrd</h1>
+<div  class="w3-container w3-red">
+    <h1>Dashboarrd</h1>
+</div>   
 {% extends 'layout.html' %}
 {% block content %}
-<body>
-    <div class = "w3-sidebar">
+<body class="w3-cell-row">
+    <div style="width:25%; height:100px" class = "w3-container w3-blue">
         <h3>literal sidebar</h3>
     </div>
     <div>
-        <div style="margin-left:25%" >
+        <div class = "w3-container" style="margin-left:25%; margin-right:25%">
             {% for url in urls %}
                 <iframe width="560" height="315" src="https://www.youtube.com/embed/{{ url[0] }}" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
             {% endfor %}
