@@ -1,18 +1,25 @@
 <div  class="w3-container w3-red">
-    <h1>Dashboarrd</h1>
+    <h1>Dashboard / top stuff</h1>
 </div>   
 {% extends 'layout.html' %}
 {% block content %}
-<body class="w3-cell-row">
-    <div style="width:25%; height:100px" class = "w3-container w3-blue">
-        <h3>literal sidebar</h3>
+<body class=" w3-cell-row">
+
+    <div style="width:15%; height:100px" class = "w3-display-container w3-cell w3-blue">
+        <div class = "w3-margin">
+            <h3>literal sidebar</h3>
+            <h3>THE</h3>
+        </div>
     </div>
-    <div>
-        <div class = "w3-container" style="margin-left:25%; margin-right:25%">
+
+    <div class = "w3-display-container w3-cell w3-cell-top w3-green" style= "height:5000px">
+        <div class = " w3-cell-row w3-margin">
             {% for url in urls %}
                 <iframe width="560" height="315" src="https://www.youtube.com/embed/{{ url[0] }}" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+                <p class = "w3-margin">{{ url[1] }}</p>
             {% endfor %}
         </div>
     </div>
+
 </body>
 {% endblock %}

@@ -78,10 +78,10 @@ def dashboard():
         results = cursor.fetchall()
 
     
-        return render_template('dashboard.html', user = username, urls = results)
+        return render_template('dashboard.html', user = username, urls = results,)
     
     return redirect(url_for("login"))
-    
+
 #will logout users and redirect to home page.
 @app.route('/logout')
 def logout():
