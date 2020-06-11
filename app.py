@@ -4,6 +4,7 @@
 from flask import Flask, render_template, g, request, redirect, url_for, session
 import sqlite3
 from datetime import timedelta
+import urllib
 
 Logged = False
 app = Flask(__name__)
@@ -74,7 +75,7 @@ def dashboard():
         username = session["user"]
         Logged = True
         cursor = get_db().cursor()
-        cursor.execute("SELECT * FROM url")
+        cursor.execute("SELECT * FROM url ORDER BY url.id DESC")
         results = cursor.fetchall()
 
     
@@ -89,6 +90,12 @@ def logout():
     session.pop("user", None)
     return redirect(url_for("index"))
     
+@app.route('/upload')
+def upload():
+    url = "https://www.youtube.com/watch?v=gHzuHo80U2M"
+    parsed = urllib.parse.urlparse(url)
+    v = urllib.parse.parse_qs(parsed.query)['v'][0]
+    return str(v)
 
 if __name__ == '__main__' :
     app.run(debug=True)
