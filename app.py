@@ -71,9 +71,11 @@ def signup():
 @app.route('/dashboard')
 def dashboard():
     username = ""
+    #if user is in the session/logged in, it lets the user pass and access the dashboard
     if "user" in session:
         username = session["user"]
         Logged = True
+        #cursor will obtain the urls, 
         cursor = get_db().cursor()
         cursor.execute("SELECT * FROM url ORDER BY url.id DESC")
         results = cursor.fetchall()
@@ -90,12 +92,32 @@ def logout():
     session.pop("user", None)
     return redirect(url_for("index"))
     
-@app.route('/upload')
+#will snip out the v value and obtain the code for the youtube urls.
+@app.route('/upload', methods = ['GET', 'POST'])
 def upload():
-    url = "https://www.youtube.com/watch?v=gHzuHo80U2M"
-    parsed = urllib.parse.urlparse(url)
-    v = urllib.parse.parse_qs(parsed.query)['v'][0]
-    return str(v)
+    username = ""
+    #if user is in the session/logged in, it lets the user pass and access the upload page
+    if "user" in session:
+        username = session["user"]
+        #when a url of a youtube video is posted, the parse function will obtain the code.
+        
+        if request.method == "POST":
+            url = request.form.get("youtube")
+            desc_name = request.form.get("title")
+            desc = request.form.get("description")
+        
+            #url = "https://www.youtube.com/watch?v=gHzuHo80U2M"
+            parsed = urllib.parse.urlparse(url)
+            v = urllib.parse.parse_qs(parsed.query)['v'][0]
+            #return str(v)
+            cursor = get_db().cursor()
+            #gets cursor to input the obtained youtube urls to database
+            insert_url = ("INSERT INTO url (url, desc_name, desc) VALUES (?, ?, ?);" )
+            cursor.execute(insert_url,(url, desc_name, desc))
+    
+        return render_template('upload.html')
+
+    return redirect(url_for("login"))
 
 if __name__ == '__main__' :
     app.run(debug=True)
