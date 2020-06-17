@@ -17,7 +17,18 @@
         <div class = "w3-display-container w3-cell w3-cell-top w3-green" style= "width:1000px ;height:5000px">
             <div class = " w3-cell-row w3-margin">
                 <h1>Upload your videos</h1>
-                
+                <br>
+                <form action = "/upload" method = "post">
+                    <input type = "text" placeholder="Youtube Link" name = "youtube" value="{{request.form.youtube}}">
+                    <input type = "text" placeholder="title" name = "title" value="{{request.form.title}}">
+                    <input type = "text" placeholder="description" name = "description" value="{{request.form.description}}">
+                    <input class="btn btn default " type="submit" value="submit">
+                </form>
+ 
+
+                {%if error%}
+                <p class="error"><strong>Error:</strong> {{ error }}</p>
+                {% endif %}
             </div>
         </div>
     

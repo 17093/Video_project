@@ -49,11 +49,12 @@ def login():
         find_user = ("SELECT * FROM users WHERE username = ? AND password = ?")
         cursor.execute(find_user,[(username),(password)])
         results = cursor.fetchall()
-        
+        print(results[0][0])
         #if username and password match the database's credentials,
         #it will redirect to dashboard
         if results:
             session["user"] = username
+            session["user_id"] = results[0][0]
             Logged = True
             return redirect(url_for("dashboard"))
         #if user is already logged in, it will redirect to dashboard.
@@ -102,6 +103,7 @@ def upload():
         #when a url of a youtube video is posted, the parse function will obtain the code.
         
         if request.method == "POST":
+            session.get("user_id")
             url = request.form.get("youtube")
             desc_name = request.form.get("title")
             desc = request.form.get("description")
@@ -113,10 +115,12 @@ def upload():
             cursor = get_db().cursor()
             #gets cursor to input the obtained youtube urls to database
             insert_url = ("INSERT INTO url (url, desc_name, desc) VALUES (?, ?, ?);" )
-            cursor.execute(insert_url,(url, desc_name, desc))
-    
-        return render_template('upload.html')
+            cursor.execute(insert_url,(v, desc_name, desc))
+            get_db().commit()
+        return render_template('upload.html' )
 
+        #else:
+            #error = "Invalid information, please check again"
     return redirect(url_for("login"))
 
 if __name__ == '__main__' :
