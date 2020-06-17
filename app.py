@@ -1,10 +1,12 @@
 #Video sorting application made by Kevin Kang
 
+#hashing https://werkzeug.palletsprojects.com/en/1.0.x/utils/
 #ex https://www.w3schools.com/w3css/default.asp
 from flask import Flask, render_template, g, request, redirect, url_for, session
 import sqlite3
 from datetime import timedelta
 import urllib
+from werkzeug.security import generate_password_hash, check_password_hash
 
 Logged = False
 app = Flask(__name__)
@@ -103,7 +105,7 @@ def upload():
         #when a url of a youtube video is posted, the parse function will obtain the code.
         
         if request.method == "POST":
-            session.get("user_id")
+            uploader = session.get("user_id")
             url = request.form.get("youtube")
             desc_name = request.form.get("title")
             desc = request.form.get("description")
@@ -114,9 +116,10 @@ def upload():
             #return str(v)
             cursor = get_db().cursor()
             #gets cursor to input the obtained youtube urls to database
-            insert_url = ("INSERT INTO url (url, desc_name, desc) VALUES (?, ?, ?);" )
-            cursor.execute(insert_url,(v, desc_name, desc))
+            insert_url = ("INSERT INTO url (url, desc_name, desc, uploader) VALUES (?, ?, ?, ?);" )
+            cursor.execute(insert_url,(v, desc_name, desc, uploader))
             get_db().commit()
+            return redirect(url_for('upload'))
         return render_template('upload.html' )
 
         #else:

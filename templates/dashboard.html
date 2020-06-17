@@ -19,9 +19,11 @@
         <div class = " w3-cell-row w3-margin">
             <h1>Recent Uploads</h1>
             {% for url in urls %}
+                <br>
                 <iframe width="560" height="315" src="https://www.youtube.com/embed/{{ url[1] }}" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
                 <h1>{{ url[2] }}</h1>
                 <h3>{{ url[3] }}</h3>
+                <h4>Uploader: {{ url[4] }}</h4>
             {% endfor %}
         </div>
     </div>
