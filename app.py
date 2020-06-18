@@ -31,7 +31,7 @@ def get_db():
 #default route
 @app.route('/')
 def index():
-    
+    #logs out the user automatically
     session.pop("user", None)
     return render_template('index.html')
 
@@ -43,6 +43,7 @@ def login():
     session.pop("user", None)
     error = None
     Logged = False
+    #if the request method is post, it will get the username and password
     if request.method == "POST":
         username=request.form.get("username")
         password=request.form.get("password")
@@ -51,7 +52,6 @@ def login():
         find_user = ("SELECT * FROM users WHERE username = ? AND password = ?")
         cursor.execute(find_user,[(username),(password)])
         results = cursor.fetchall()
-        print(results[0][0])
         #if username and password match the database's credentials,
         #it will redirect to dashboard
         if results:
@@ -67,9 +67,12 @@ def login():
 
 
 
-@app.route('/signup')
+@app.route('/signup', methods = ['GET', 'POST'])
 def signup():
-    return render_template('index.html')
+
+    return render_template(url_for('signup'))
+
+
 
 @app.route('/dashboard')
 def dashboard():
@@ -80,7 +83,7 @@ def dashboard():
         Logged = True
         #cursor will obtain the urls, 
         cursor = get_db().cursor()
-        cursor.execute("SELECT * FROM url ORDER BY url.id DESC")
+        cursor.execute("SELECT  url.id, url.url, url.desc_name, url.desc, users.username FROM url JOIN users ON url.uploader = users.id ORDER BY url.id DESC")
         results = cursor.fetchall()
 
     
@@ -119,12 +122,14 @@ def upload():
             insert_url = ("INSERT INTO url (url, desc_name, desc, uploader) VALUES (?, ?, ?, ?);" )
             cursor.execute(insert_url,(v, desc_name, desc, uploader))
             get_db().commit()
+            #refreshes the page to empty the input boxes
             return redirect(url_for('upload'))
         return render_template('upload.html' )
 
         #else:
             #error = "Invalid information, please check again"
     return redirect(url_for("login"))
+
 
 if __name__ == '__main__' :
     app.run(debug=True)
