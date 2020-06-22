@@ -102,6 +102,7 @@ def logout():
 @app.route('/upload', methods = ['GET', 'POST'])
 def upload():
     username = ""
+    error = None
     #if user is in the session/logged in, it lets the user pass and access the upload page
     if "user" in session:
         username = session["user"]
@@ -112,19 +113,23 @@ def upload():
             url = request.form.get("youtube")
             desc_name = request.form.get("title")
             desc = request.form.get("description")
-        
-            #url = "https://www.youtube.com/watch?v=gHzuHo80U2M"
-            parsed = urllib.parse.urlparse(url)
-            v = urllib.parse.parse_qs(parsed.query)['v'][0]
-            #return str(v)
-            cursor = get_db().cursor()
-            #gets cursor to input the obtained youtube urls to database
-            insert_url = ("INSERT INTO url (url, desc_name, desc, uploader) VALUES (?, ?, ?, ?);" )
-            cursor.execute(insert_url,(v, desc_name, desc, uploader))
-            get_db().commit()
-            #refreshes the page to empty the input boxes
-            return redirect(url_for('upload'))
-        return render_template('upload.html' )
+            length_desc = len(desc)
+            length_title = len(desc_name)
+            if len(length_desc < 50 or length_title < 20):
+                #url = "https://www.youtube.com/watch?v=gHzuHo80U2M"
+                parsed = urllib.parse.urlparse(url)
+                v = urllib.parse.parse_qs(parsed.query)['v'][0]
+                #return str(v)
+                cursor = get_db().cursor()
+                #gets cursor to input the obtained youtube urls to database
+                insert_url = ("INSERT INTO url (url, desc_name, desc, uploader) VALUES (?, ?, ?, ?);" )
+                cursor.execute(insert_url,(v, desc_name, desc, uploader))
+                get_db().commit()
+                #refreshes the page to empty the input boxes
+                return redirect(url_for('upload'))
+            else:
+                error = "Title or Description too long, please shorten to under 50 characters"
+        return render_template('upload.html', error = error )
 
         #else:
             #error = "Invalid information, please check again"
