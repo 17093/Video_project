@@ -1,4 +1,4 @@
-#Video sorting application made by Kevin Kang
+#Video sorting application made by Kevin Kang, (2020)
 
 #hashing https://werkzeug.palletsprojects.com/en/1.0.x/utils/
 #ex https://www.w3schools.com/w3css/default.asp
@@ -11,6 +11,7 @@ from werkzeug.security import generate_password_hash, check_password_hash
 Logged = False
 app = Flask(__name__)
 app.secret_key = "bread"
+#the period the user is allowed within the website until autologout 
 app.permanent_session_lifetime = timedelta(minutes=50)
 DATABASE = 'urlstorage.db'
 
@@ -38,6 +39,7 @@ def index():
 #login route
 @app.route('/login', methods=['GET','POST'])
 def login():
+    #if user is already in session, the website automatically redirects the user to the dashboard rather than logging in again
     if "user" in session:
         return redirect(url_for("dashboard"))
     session.pop("user", None)
@@ -113,23 +115,28 @@ def upload():
             url = request.form.get("youtube")
             desc_name = request.form.get("title")
             desc = request.form.get("description")
-            length_desc = len(desc)
-            length_title = len(desc_name)
-            if len(length_desc < 50 or length_title < 20):
+            title = len(desc_name)   
+            title_ = len(desc)       
+            print(title, title_)  
+            if (title < 50) or (title_ < 20):
                 #url = "https://www.youtube.com/watch?v=gHzuHo80U2M"
                 parsed = urllib.parse.urlparse(url)
                 v = urllib.parse.parse_qs(parsed.query)['v'][0]
                 #return str(v)
-                cursor = get_db().cursor()
-                #gets cursor to input the obtained youtube urls to database
-                insert_url = ("INSERT INTO url (url, desc_name, desc, uploader) VALUES (?, ?, ?, ?);" )
-                cursor.execute(insert_url,(v, desc_name, desc, uploader))
-                get_db().commit()
-                #refreshes the page to empty the input boxes
-                return redirect(url_for('upload'))
+                if v:
+                    cursor = get_db().cursor()
+                    #gets cursor to input the obtained youtube urls to database
+                    insert_url = ("INSERT INTO url (url, desc_name, desc, uploader) VALUES (?, ?, ?, ?);" )
+                    cursor.execute(insert_url,(v, desc_name, desc, uploader))
+                    get_db().commit()
+                    #refreshes the page to empty the input boxes
+                    return redirect(url_for('upload'))
+                else:
+                    error = "error, please check the url again"     
             else:
                 error = "Title or Description too long, please shorten to under 50 characters"
         return render_template('upload.html', error = error )
+    return redirect(url_for(login))
 
         #else:
             #error = "Invalid information, please check again"
