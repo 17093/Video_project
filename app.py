@@ -136,11 +136,20 @@ def upload():
             else:
                 error = "Title or Description too long, please shorten to under 50 characters"
         return render_template('upload.html', error = error )
-    return redirect(url_for(login))
-
-        #else:
-            #error = "Invalid information, please check again"
     return redirect(url_for("login"))
+
+@app.route('/delete', methods=(["GET", "POST"]))
+def delete():
+    if request.method == "POST":
+        #Gets the video and deletes from the database
+        cursor = get_db().cursor()
+        id = int(request.form["video_id"])
+        delete_url = ("DELETE FROM url WHERE id=?")
+        #needs comma(), after the tuple
+        cursor.execute(delete_url,(id,))
+        get_db().commit()
+    return redirect(url_for("dashboard"))
+
 
 
 if __name__ == '__main__' :
