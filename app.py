@@ -2,6 +2,7 @@
 
 #hashing https://werkzeug.palletsprojects.com/en/1.0.x/utils/
 #ex https://www.w3schools.com/w3css/default.asp
+#https://flask.palletsprojects.com/en/1.1.x/quickstart/
 from flask import Flask, render_template, g, request, redirect, url_for, session
 import sqlite3
 from datetime import timedelta
@@ -150,6 +151,9 @@ def delete():
         get_db().commit()
     return redirect(url_for("dashboard"))
 
+@app.route('/video/<url>')
+def show_video(url)
+    #shows more informations about the video
 
 
 if __name__ == '__main__' :
