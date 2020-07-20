@@ -151,9 +151,14 @@ def delete():
         get_db().commit()
     return redirect(url_for("dashboard"))
 
-@app.route('/video/<url>')
-def show_video(url)
+#@app.route('/video/<url>')
+#def show_video(url)
     #shows more informations about the video
+
+
+@app.route('/about')
+def about():
+    return render_template("about.html")
 
 
 if __name__ == '__main__' :
