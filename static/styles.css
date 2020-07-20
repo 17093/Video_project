@@ -9,5 +9,8 @@ html{
 .right{
     width: 40%;
     float: right;
+}
 
+.wrapbox{
+    word-wrap: break-word;
 }

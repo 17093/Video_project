@@ -15,25 +15,30 @@
         <div class = "w3-margin">
         </div>
     </div>
-    <div class = "w3-display-container w3-cell w3-cell-top " style= " width:1000px ;height:5000px">
-        <div class = " w3-cell-row w3-margin">
+    <div class = "w3-cell-row w3-display-container w3-cell  " style= " width:1000px ;height:5000px ; background-color: #bfbfbf;">
+        <div class = "w3-cell w3-margin" >
             <h1>Recent Uploads</h1>
             {% for url in urls %}
                 <div class = "left">
                     <br>
                     <iframe  width="560" height="315" src="https://www.youtube.com/embed/{{ url[1] }}" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
-                    <h1>{{ url[2] }}</h1>
-                    <h3>{{ url[3] }}</h3>
                     <h4>Uploader: {{ url[4] }}</h4>
                     <br>
                     <br>
                 </div>
-                <div class = "right">
+                <div class = "right   w3-cell">
                     <br>
                     <form action="/delete" method="post">
                     <input type="hidden" name="video_id" value = "{{url[0]}}">
                     <input type="submit" value="delete">
                     </form>
+                    <div class= "wrapbox">
+                    <strong>
+                        <h3>{{ url[2] }}</h3>
+                    </strong>
+                        <h6>{{ url[3] }}</h6>
+                   
+                    </div>
                 </div>
             {% endfor %}
         </div>

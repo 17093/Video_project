@@ -116,10 +116,9 @@ def upload():
             url = request.form.get("youtube")
             desc_name = request.form.get("title")
             desc = request.form.get("description")
-            title = len(desc_name)   
-            title_ = len(desc)       
-            print(title, title_)  
-            if (title < 50) or (title_ < 20):
+            if len(desc_name) > 20 or len(desc) > 100:
+                error = "Title or Description too long, please shorten to under 50 characters"
+            else:
                 #url = "https://www.youtube.com/watch?v=gHzuHo80U2M"
                 parsed = urllib.parse.urlparse(url)
                 v = urllib.parse.parse_qs(parsed.query)['v'][0]
@@ -132,12 +131,12 @@ def upload():
                     get_db().commit()
                     #refreshes the page to empty the input boxes
                     return redirect(url_for('upload'))
+                     
                 else:
-                    error = "error, please check the url again"     
-            else:
-                error = "Title or Description too long, please shorten to under 50 characters"
+                    error = "error, please check the url again"
         return render_template('upload.html', error = error )
-    return redirect(url_for("login"))
+    else:
+        return redirect(url_for("login"))
 
 @app.route('/delete', methods=(["GET", "POST"]))
 def delete():
