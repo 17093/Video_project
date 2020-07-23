@@ -1,20 +1,11 @@
-<div  class="w3-container">
-    <h1>Dashboard</h1>
-</div>   
 {% extends 'layout.html' %}
 {% block content %}
 <body class=" w3-cell-row">
-
-    <div style="width:20%" class = " w3-display-container w3-cell">
-        <div class = "w3-margin">
-
-        </div>
-    </div>
-    <div style="width:15%" class = "w3-display-container w3-cell">
+    <div style="width:30%" class = "w3-display-container w3-cell">
 
     </div>
     <div class = " w3-cell-row w3-display-container w3-cell " style= " width:1000px">
-        <div class = "w3-cell-row" >
+        <div class = "w3-cell-row wrapbox" >
             <h1 class ="w3-container sans">Recent Uploadsans</h1>
             {% for url in urls %}
                 <div class = "left w3-container ">

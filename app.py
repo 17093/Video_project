@@ -85,12 +85,12 @@ def dashboard():
         username = session["user"]
         Logged = True
         #cursor will obtain the urls, 
-        cursor = get_db().cursor()
-        cursor.execute("SELECT  url.id, url.url, url.desc_name, url.desc, users.username FROM url JOIN users ON url.uploader = users.id ORDER BY url.id DESC")
-        results = cursor.fetchall()
-
+    cursor = get_db().cursor()
+    cursor.execute("SELECT  url.id, url.url, url.desc_name, url.desc, users.username FROM url JOIN users ON url.uploader = users.id ORDER BY url.id DESC")
+    results = cursor.fetchall()
     
-        return render_template('dashboard.html', user = username, urls = results,)
+    
+    return render_template('dashboard.html', user = username, urls = results, page_name = "Dashboard")
     
     return redirect(url_for("login"))
 
@@ -123,7 +123,7 @@ def upload():
             else:
                 #url = "https://www.youtube.com/watch?v=gHzuHo80U2M"
                 parsed = urllib.parse.urlparse(url)
-                v = urllib.parse.parse_qs(parsed.query)['v'][0]
+                v = urllib.parse.parse_qs(parsed.query).get('v', [None])[0]
                 #return str(v)
                 if v:
                     cursor = get_db().cursor()
@@ -136,7 +136,7 @@ def upload():
                      
                 else:
                     error = "error, please check the url again"
-        return render_template('upload.html', error = error )
+        return render_template('upload.html', error = error, page_name = "Upload")
     else:
         return redirect(url_for("login"))
 
@@ -159,7 +159,7 @@ def delete():
 
 @app.route('/about')
 def about():
-    return render_template("about.html")
+    return render_template("about.html", page_name = "About")
 
 
 if __name__ == '__main__' :
