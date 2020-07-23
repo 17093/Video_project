@@ -1,5 +1,13 @@
 html{
-    background-color: gray;
+    background-color: #e8e8e8;
+}
+
+.mainpage{
+    background-color: #4f4f4f;
+}
+
+.topbar{
+    background-color:#c93636;
 }
 .left{
     width: 60%;
@@ -13,4 +21,8 @@ html{
 
 .wrapbox{
     word-wrap: break-word;
+}
+
+.sans{
+    font-family:"Comic Sans MS", cursive, sans-serif;
 }

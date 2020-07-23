@@ -118,6 +118,8 @@ def upload():
             desc = request.form.get("description")
             if len(desc_name) > 20 or len(desc) > 100:
                 error = "Title or Description too long, please shorten to under 50 characters"
+            elif len(desc_name) == 0 or len(desc) == 0:
+                error = "Title or Description too short, please enter something into the bar"
             else:
                 #url = "https://www.youtube.com/watch?v=gHzuHo80U2M"
                 parsed = urllib.parse.urlparse(url)
