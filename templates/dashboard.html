@@ -17,10 +17,13 @@
                 </div>
                 <div class = "right  w3-container ">
                     <br>
+                    
+                    {%if user != ""%}
                     <form action="/delete" method="post">
                     <input type="hidden" name="video_id" value = "{{url[0]}}">
                     <input type="submit" value="delete">
                     </form>
+                    {% endif %}
                     <div class= "wrapbox">
                     <strong>
                         <h3>{{ url[2] }}</h3>

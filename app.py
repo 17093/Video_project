@@ -31,11 +31,11 @@ def get_db():
     return db
 
 #default route
-@app.route('/')
-def index():
+#@app.route('/')
+#def index():
     #logs out the user automatically
-    session.pop("user", None)
-    return render_template('index.html')
+#    session.pop("user", None)
+#    return render_template('index.html')
 
 #login route
 @app.route('/login', methods=['GET','POST'])
@@ -77,20 +77,20 @@ def signup():
 
 
 
-@app.route('/dashboard')
+@app.route('/')
 def dashboard():
     username = ""
     #if user is in the session/logged in, it lets the user pass and access the dashboard
     if "user" in session:
         username = session["user"]
-        Logged = True
+        session["logged"] = True
         #cursor will obtain the urls, 
     cursor = get_db().cursor()
     cursor.execute("SELECT  url.id, url.url, url.desc_name, url.desc, users.username FROM url JOIN users ON url.uploader = users.id ORDER BY url.id DESC")
     results = cursor.fetchall()
+    #print (username)
     
-    
-    return render_template('dashboard.html', user = username, urls = results, page_name = "Dashboard")
+    return render_template('dashboard.html', user = username, urls = results, page_name = "Home")
     
     return redirect(url_for("login"))
 
@@ -99,7 +99,7 @@ def dashboard():
 def logout():
     Logged = False
     session.pop("user", None)
-    return redirect(url_for("index"))
+    return redirect(url_for("dashboard"))
     
 #will snip out the v value and obtain the code for the youtube urls.
 @app.route('/upload', methods = ['GET', 'POST'])
