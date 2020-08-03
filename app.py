@@ -109,13 +109,22 @@ def upload():
     #if user is in the session/logged in, it lets the user pass and access the upload page
     if "user" in session:
         username = session["user"]
+
+        cursor = get_db().cursor()
+        filter_tag = ("SELECT * FROM tags")
+        cursor.execute(filter_tag)
+        filter_tags = cursor.fetchall()
+
+
         #when a url of a youtube video is posted, the parse function will obtain the code.
-        
         if request.method == "POST":
+            #gets all the needed imformation from the user's input
+
             uploader = session.get("user_id")
             url = request.form.get("youtube")
             desc_name = request.form.get("title")
             desc = request.form.get("description")
+            #if length of title or desc is not appropriate, it gives an error
             if len(desc_name) > 20 or len(desc) > 100:
                 error = "Title or Description too long, please shorten to under 50 characters"
             elif len(desc_name) == 0 or len(desc) == 0:
