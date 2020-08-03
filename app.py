@@ -50,16 +50,19 @@ def login():
     if request.method == "POST":
         username=request.form.get("username")
         password=request.form.get("password")
+        hash_password = generate_password_hash(password, 'SHA256')
         cursor = get_db().cursor()
         #gets cursor and compares the credentials
-        find_user = ("SELECT * FROM users WHERE username = ? AND password = ?")
-        cursor.execute(find_user,[(username),(password)])
-        results = cursor.fetchall()
+        find_user = ("SELECT * FROM users WHERE username = ?")
+        cursor.execute(find_user,(username,))
+        results = cursor.fetchone()
+        print (hash_password)
+        print (check_password_hash(results[2],hash_password))
         #if username and password match the database's credentials,
         #it will redirect to dashboard
         if results:
             session["user"] = username
-            session["user_id"] = results[0][0]
+            session["user_id"] = results[0]
             Logged = True
             return redirect(url_for("dashboard"))
         #if user is already logged in, it will redirect to dashboard.
@@ -114,6 +117,7 @@ def upload():
         filter_tag = ("SELECT * FROM tags")
         cursor.execute(filter_tag)
         filter_tags = cursor.fetchall()
+        print (filter_tags)
 
 
         #when a url of a youtube video is posted, the parse function will obtain the code.
