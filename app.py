@@ -50,21 +50,25 @@ def login():
     if request.method == "POST":
         username=request.form.get("username")
         password=request.form.get("password")
-        hash_password = generate_password_hash(password, 'SHA256')
+        #hash_password = generate_password_hash(password, method='SHA256')
         cursor = get_db().cursor()
         #gets cursor and compares the credentials
         find_user = ("SELECT * FROM users WHERE username = ?")
         cursor.execute(find_user,(username,))
         results = cursor.fetchone()
-        print (hash_password)
-        print (check_password_hash(results[2],hash_password))
+        #print (check_password_hash(results[2],hash_password))
         #if username and password match the database's credentials,
+        #checks the hashed password after comparing the entered password by the user
+        
         #it will redirect to dashboard
         if results:
-            session["user"] = username
-            session["user_id"] = results[0]
-            Logged = True
-            return redirect(url_for("dashboard"))
+            hash_compare = check_password_hash(results[2],password)
+            #THERE IS NO ERROR MESSAGE WHEN NO PASSWORD
+            if hash_compare == True:
+                session["user"] = username
+                session["user_id"] = results[0]
+                Logged = True
+                return redirect(url_for("dashboard"))
         #if user is already logged in, it will redirect to dashboard.
         #if not, it will reload login.html.
         else:
