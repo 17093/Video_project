@@ -14,6 +14,7 @@ app = Flask(__name__)
 app.secret_key = "bread"
 #the period the user is allowed within the website until autologout 
 app.permanent_session_lifetime = timedelta(minutes=50)
+#database file link
 DATABASE = 'urlstorage.db'
 
 #closes database
@@ -56,19 +57,17 @@ def login():
         find_user = ("SELECT * FROM users WHERE username = ?")
         cursor.execute(find_user,(username,))
         results = cursor.fetchone()
-        #print (check_password_hash(results[2],hash_password))
-        #if username and password match the database's credentials,
-        #checks the hashed password after comparing the entered password by the user
-        
-        #it will redirect to dashboard
         if results:
+            #compares the given password and the hashed password in the database
             hash_compare = check_password_hash(results[2],password)
-            #THERE IS NO ERROR MESSAGE WHEN NO PASSWORD
+            ###THERE IS NO ERROR MESSAGE WHEN NO PASSWORD###
             if hash_compare == True:
                 session["user"] = username
                 session["user_id"] = results[0]
                 Logged = True
                 return redirect(url_for("dashboard"))
+            else:
+                error= "Invalid Credentials, Please try again"
         #if user is already logged in, it will redirect to dashboard.
         #if not, it will reload login.html.
         else:
