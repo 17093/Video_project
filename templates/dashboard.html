@@ -2,7 +2,17 @@
 {% block content %}
 <body class=" w3-cell-row">
     <div style="width:30%" class = "w3-display-container w3-cell">
+        <div class="w3-container w3-margin">
+            <h3>Filter</h3>
+            <form action="/filter">
+                {% for tag_type in tags %}
+                <input type="checkbox" id="filter1" name="filter1" value="intertainment">
+                <label for="filter1">Entertainment</label><br>
 
+                <input type="submit" value="filter">
+            </form>
+              
+        </div>
     </div>
     <div class = " w3-cell-row w3-display-container w3-cell " style= " width:1000px">
         <div class = "w3-cell-row wrapbox" >

@@ -92,7 +92,7 @@ def dashboard():
         session["logged"] = True
         #cursor will obtain the urls, 
     cursor = get_db().cursor()
-    cursor.execute("SELECT  url.id, url.url, url.desc_name, url.desc, users.username FROM url JOIN users ON url.uploader = users.id ORDER BY url.id DESC")
+    cursor.execute("SELECT  url.id, url.url, url.desc_name, url.desc, users.username FROM url JOIN users ON url.uploader = users.id ORDER BY url.id DESC ")
     results = cursor.fetchall()
     #print (username)
     
@@ -176,6 +176,12 @@ def delete():
 @app.route('/about')
 def about():
     return render_template("about.html", page_name = "About")
+
+
+@app.route('/filter')
+def filter():
+
+    return redirect(url_for("dashboard"))
 
 
 if __name__ == '__main__' :
