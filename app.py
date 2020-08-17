@@ -190,7 +190,7 @@ def filter():
                 sql += " OR filter = ?"
             values.append(v) 
             count +=1
-        
+        #add in tuple things into the thing
         print (sql)
         print (values)
     return redirect(url_for("dashboard"))
