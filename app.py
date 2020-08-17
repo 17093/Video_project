@@ -182,8 +182,17 @@ def about():
 @app.route('/filter', methods=['GET','POST'])
 def filter():
     if request.method == "POST":
-        results = requets.form.get("idk")
-
+        sql = ("SELECT * FROM url WHERE filter = ?")
+        values = []
+        count = 0
+        for k,v in request.form.items():
+            if count > 0:
+                sql += " OR filter = ?"
+            values.append(v) 
+            count +=1
+        
+        print (sql)
+        print (values)
     return redirect(url_for("dashboard"))
 
 

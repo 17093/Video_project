@@ -4,9 +4,9 @@
     <div style="width:30%" class = "w3-display-container w3-cell">
         <div class="w3-container w3-margin">
             <h3>Filter</h3>
-            <form action="/filter">
+            <form action="/filter" method = "POST">
                 {% for tag_type in tags %}
-                    <input type="checkbox" id="filter{{ tag_type[1] }}" name="filter{{ tag_type[1] }}" value="{{ tag_type[1] }}">
+                    <input type="checkbox" id="filter{{ tag_type[1] }}" name="{{ tag_type[1] }}" value="{{ tag_type[0] }}">
                     <label for="filter{{ tag_type[1] }}">{{ tag_type[1] }}</label><br>
                 {% endfor %}
                 <input type="submit" value="Submit">
@@ -16,7 +16,7 @@
     </div>
     <div class = " w3-cell-row w3-display-container w3-cell " style= " width:1000px">
         <div class = "w3-cell-row wrapbox" >
-            <h1 class ="w3-container">Recent Uploadsans</h1>
+            <h1 class ="w3-container">Recent Uploads</h1>
             {% for url in urls %}
                 <div class = "left w3-container ">
                     <br>
