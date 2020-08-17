@@ -6,10 +6,10 @@
             <h3>Filter</h3>
             <form action="/filter">
                 {% for tag_type in tags %}
-                <input type="checkbox" id="filter1" name="filter1" value="intertainment">
-                <label for="filter1">Entertainment</label><br>
-
-                <input type="submit" value="filter">
+                    <input type="checkbox" id="filter{{ tag_type[1] }}" name="filter{{ tag_type[1] }}" value="{{ tag_type[1] }}">
+                    <label for="filter{{ tag_type[1] }}">{{ tag_type[1] }}</label><br>
+                {% endfor %}
+                <input type="submit" value="Submit">
             </form>
               
         </div>
@@ -21,7 +21,8 @@
                 <div class = "left w3-container ">
                     <br>
                     <iframe  width="560" height="315" src="https://www.youtube.com/embed/{{ url[1] }}" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
-                    <h4>Uploader: {{ url[4] }}</h4>
+                    <h4>Tags: {{ url[5] }}</h4>
+                    <h5>Uploader: {{ url[4] }}</h5>
                     <br>
                     <br>
                 </div>

@@ -92,13 +92,14 @@ def dashboard():
         session["logged"] = True
         #cursor will obtain the urls, 
     cursor = get_db().cursor()
-    cursor.execute("SELECT  url.id, url.url, url.desc_name, url.desc, users.username FROM url JOIN users ON url.uploader = users.id ORDER BY url.id DESC ")
+    cursor.execute("SELECT  url.id, url.url, url.desc_name, url.desc, users.username, tags.tag_type FROM url JOIN users ON url.uploader=users.id JOIN tags ON url.filter=tags.id ORDER BY url.id DESC ")
     results = cursor.fetchall()
-    #print (username)
-    
-    return render_template('dashboard.html', user = username, urls = results, page_name = "Home")
-    
-    return redirect(url_for("login"))
+    print (username)
+    cursor2 = get_db().cursor()
+    cursor2.execute(" SELECT * FROM tags ")
+    tag_results = cursor2.fetchall()
+
+    return render_template('dashboard.html', user = username, urls = results, page_name = "Home", tags = tag_results, )
 
 #will logout users and redirect to home page.
 @app.route('/logout')
@@ -178,8 +179,10 @@ def about():
     return render_template("about.html", page_name = "About")
 
 
-@app.route('/filter')
+@app.route('/filter', methods=['GET','POST'])
 def filter():
+    if request.method == "POST":
+        results = requets.form.get("idk")
 
     return redirect(url_for("dashboard"))
 
