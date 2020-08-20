@@ -4,7 +4,7 @@
     <div style="width:30%" class = "w3-display-container w3-cell">
         <div class="w3-container w3-margin">
             <h3>Filter</h3>
-            <form action="/filter" method = "POST">
+            <form action="/" method = "POST">
                 {% for tag_type in tags %}
                     <input type="checkbox" id="filter{{ tag_type[1] }}" name="{{ tag_type[1] }}" value="{{ tag_type[0] }}">
                     <label for="filter{{ tag_type[1] }}">{{ tag_type[1] }}</label><br>

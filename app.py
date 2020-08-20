@@ -83,23 +83,44 @@ def signup():
 
 
 
-@app.route('/')
+@app.route('/', methods = ['GET', 'POST'])
 def dashboard():
+    count = 0
     username = ""
     #if user is in the session/logged in, it lets the user pass and access the dashboard
     if "user" in session:
         username = session["user"]
         session["logged"] = True
         #cursor will obtain the urls, 
-    cursor = get_db().cursor()
-    cursor.execute("SELECT  url.id, url.url, url.desc_name, url.desc, users.username, tags.tag_type FROM url JOIN users ON url.uploader=users.id JOIN tags ON url.filter=tags.id ORDER BY url.id DESC ")
-    results = cursor.fetchall()
+    if request.method == "POST":
+        sql = ("SELECT url.id, url.url, url.desc_name, url.desc, users.username, tags.tag_type FROM url JOIN users ON url.uploader=users.id JOIN tags ON url.filter=tags.id WHERE filter = ?")
+        values = []
+        
+        for k,v in request.form.items():
+            if count > 0:
+                sql += " OR filter = ?"
+            values.append(v) 
+            count +=1
+        #add in tuple things into the thing
+        sql += " ORDER by url.id DESC "
+        print (sql)
+        print (values)
+    if count > 0:
+        cursor = get_db().cursor()
+        cursor.execute(sql,values)
+        results = cursor.fetchall()
+        print (results)
+    else:
+        cursor = get_db().cursor()
+        cursor.execute("SELECT  url.id, url.url, url.desc_name, url.desc, users.username, tags.tag_type FROM url JOIN users ON url.uploader=users.id JOIN tags ON url.filter=tags.id ORDER BY url.id DESC ")
+        results = cursor.fetchall()
+        
     print (username)
     cursor2 = get_db().cursor()
     cursor2.execute(" SELECT * FROM tags ")
     tag_results = cursor2.fetchall()
 
-    return render_template('dashboard.html', user = username, urls = results, page_name = "Home", tags = tag_results, )
+    return render_template('dashboard.html', user = username, urls = results, page_name = "Home", tags = tag_results,)
 
 #will logout users and redirect to home page.
 @app.route('/logout')
@@ -193,7 +214,11 @@ def filter():
         #add in tuple things into the thing
         print (sql)
         print (values)
-    return redirect(url_for("dashboard"))
+        cursor = get_db().cursor()
+        cursor.execute(sql,values)
+        results = cursor.fetchall()
+        print (results)
+    return render_template('dashboard.html', user = username, urls = results, page_name = "Home", tags = tag_results)
 
 
 if __name__ == '__main__' :
