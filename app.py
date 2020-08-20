@@ -87,8 +87,10 @@ def signup():
 def dashboard():
     count = 0
     username = ""
+    error = ""
     #if user is in the session/logged in, it lets the user pass and access the dashboard
     if "user" in session:
+        title_text = ""
         username = session["user"]
         session["logged"] = True
         #cursor will obtain the urls, 
@@ -110,17 +112,26 @@ def dashboard():
         cursor.execute(sql,values)
         results = cursor.fetchall()
         print (results)
+        if results:
+            print ("the!")
+        else:
+            print ("not here!")
+            error = "Looks like there are no videos with this tag exists yet!"
+            title_text = ""
+        
     else:
         cursor = get_db().cursor()
         cursor.execute("SELECT  url.id, url.url, url.desc_name, url.desc, users.username, tags.tag_type FROM url JOIN users ON url.uploader=users.id JOIN tags ON url.filter=tags.id ORDER BY url.id DESC ")
         results = cursor.fetchall()
-        
-    print (username)
+        title_text = "Recent Uploads"
+    
+    print (results)
+
     cursor2 = get_db().cursor()
     cursor2.execute(" SELECT * FROM tags ")
     tag_results = cursor2.fetchall()
 
-    return render_template('dashboard.html', user = username, urls = results, page_name = "Home", tags = tag_results,)
+    return render_template('dashboard.html', user = username, urls = results, page_name = "Home", tags = tag_results, error = error, title_text = title_text)
 
 #will logout users and redirect to home page.
 @app.route('/logout')

@@ -16,7 +16,13 @@
     </div>
     <div class = " w3-cell-row w3-display-container w3-cell " style= " width:1000px">
         <div class = "w3-cell-row wrapbox" >
-            <h1 class ="w3-container">Recent Uploads</h1>
+            <h1 class ="w3-container">{{ title_text }}</h1>
+
+            {% if error %}
+                
+                <p class="error "><strong><h2>Oh No!</h2></strong> <h4>{{ error }}</h4></p>
+            {% endif %}
+
             {% for url in urls %}
                 <div class = "left w3-container ">
                     <br>
@@ -37,7 +43,7 @@
                     {% endif %}
                     <div class= "wrapbox">
                     <strong>
-                        <h3>{{ url[2] }}</h3>
+                        <h2>{{ url[2] }}</h2>
                     </strong>
                         <h6>{{ url[3] }}</h6>
                    
