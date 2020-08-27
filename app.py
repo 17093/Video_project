@@ -149,11 +149,11 @@ def upload():
     if "user" in session:
         username = session["user"]
 
+        #gets tags from the sql database
         cursor = get_db().cursor()
-        filter_tag = ("SELECT * FROM tags")
+        filter_tag = ("SELECT id, tag_type FROM tags")
         cursor.execute(filter_tag)
         filter_tags = cursor.fetchall()
-        print (filter_tags)
 
 
         #when a url of a youtube video is posted, the parse function will obtain the code.
@@ -164,6 +164,8 @@ def upload():
             url = request.form.get("youtube")
             desc_name = request.form.get("title")
             desc = request.form.get("description")
+            tag = request.form.get("tag")
+            
             #if length of title or desc is not appropriate, it gives an error
             if len(desc_name) > 20 or len(desc) > 100:
                 error = "Title or Description too long, please shorten to under 50 characters"
@@ -177,15 +179,15 @@ def upload():
                 if v:
                     cursor = get_db().cursor()
                     #gets cursor to input the obtained youtube urls to database
-                    insert_url = ("INSERT INTO url (url, desc_name, desc, uploader) VALUES (?, ?, ?, ?);" )
-                    cursor.execute(insert_url,(v, desc_name, desc, uploader))
+                    insert_url = ("INSERT INTO url (url, desc_name, desc, uploader, filter) VALUES (?, ?, ?, ?, ?);" )
+                    cursor.execute(insert_url,(v, desc_name, desc, uploader, tag))
                     get_db().commit()
                     #refreshes the page to empty the input boxes
                     return redirect(url_for('upload'))
                      
                 else:
                     error = "error, please check the url again"
-        return render_template('upload.html', error = error, page_name = "Upload")
+        return render_template('upload.html', error = error, page_name = "Upload", tags = filter_tags)
     else:
         return redirect(url_for("login"))
 
