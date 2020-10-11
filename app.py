@@ -75,14 +75,14 @@ def login():
     return render_template("login.html", error = error)
 
 
-
+#dead route, 
 @app.route('/signup', methods = ['GET', 'POST'])
 def signup():
 
     return render_template(url_for('signup'))
 
 
-
+#main index page of the website, user is directed to this page when they open this website
 @app.route('/', methods = ['GET', 'POST'])
 def dashboard():
     count = 0
@@ -93,32 +93,38 @@ def dashboard():
         title_text = ""
         username = session["user"]
         session["logged"] = True
-        #cursor will obtain the urls, 
+        #cursor will obtain the urls, video names, descriptions, tags, username to display on webpage
     if request.method == "POST":
         sql = ("SELECT url.id, url.url, url.desc_name, url.desc, users.username, tags.tag_type FROM url JOIN users ON url.uploader=users.id JOIN tags ON url.filter=tags.id WHERE filter = ?")
         values = []
-        
+        #creates a for loop for amount of tags that needs to be searched for, adding a "Or filter = ?" creating a query. 
+        #it will also add more values to the count variable to keep count of how many "Or filter = ?" were added
         for k,v in request.form.items():
             if count > 0:
                 sql += " OR filter = ?"
             values.append(v) 
             count +=1
-        #add in tuple things into the thing
+        #adds the order query at the end of the sql query.
         sql += " ORDER by url.id DESC "
         print (sql)
-        print (values)
+        print (count)
+        #if count is higher then 0, meaning that there are a filter query, the webpage will use the previously made query to
+        #fetch the needed information from the databse and display on the webpage
     if count > 0:
         cursor = get_db().cursor()
         cursor.execute(sql,values)
         results = cursor.fetchall()
+        #if there are results, it will display the filtered results on the webpage
         print (results)
         if results:
             print ("the!")
+        #if there are no results, it will display an error message and redirect to main page
         else:
             print ("not here!")
             error = "Looks like there are no videos with this tag exists yet!"
             title_text = ""
-        
+
+    #if the count was not higher than 0, meaning that there were no filter query, will just fetch the normal view of the webpage, all the videos will be shown  
     else:
         cursor = get_db().cursor()
         cursor.execute("SELECT  url.id, url.url, url.desc_name, url.desc, users.username, tags.tag_type FROM url JOIN users ON url.uploader=users.id JOIN tags ON url.filter=tags.id ORDER BY url.id DESC ")
@@ -131,6 +137,7 @@ def dashboard():
     cursor2.execute(" SELECT * FROM tags ")
     tag_results = cursor2.fetchall()
 
+    title_text = "Recent Uploads"
     return render_template('dashboard.html', user = username, urls = results, page_name = "Home", tags = tag_results, error = error, title_text = title_text)
 
 #will logout users and redirect to home page.
