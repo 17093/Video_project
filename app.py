@@ -132,9 +132,10 @@ def dashboard():
         title_text = "Recent Uploads"
     
     print (results)
-
+    #fetches all tag types
     cursor2 = get_db().cursor()
     cursor2.execute(" SELECT * FROM tags ")
+    #applies to the tag/filter bar on left
     tag_results = cursor2.fetchall()
 
     title_text = "Recent Uploads"
@@ -192,6 +193,7 @@ def upload():
                     #refreshes the page to empty the input boxes
                     return redirect(url_for('upload'))
                      
+                #error message     
                 else:
                     error = "error, please check the url again"
         return render_template('upload.html', error = error, page_name = "Upload", tags = filter_tags)
@@ -208,37 +210,17 @@ def delete():
         #needs comma(), after the tuple
         cursor.execute(delete_url,(id,))
         get_db().commit()
+        #redirects user to dashboard
     return redirect(url_for("dashboard"))
 
 #@app.route('/video/<url>')
 #def show_video(url)
     #shows more informations about the video
 
-
+#renderes the about page for the webpage
 @app.route('/about')
 def about():
     return render_template("about.html", page_name = "About")
-
-
-@app.route('/filter', methods=['GET','POST'])
-def filter():
-    if request.method == "POST":
-        sql = ("SELECT * FROM url WHERE filter = ?")
-        values = []
-        count = 0
-        for k,v in request.form.items():
-            if count > 0:
-                sql += " OR filter = ?"
-            values.append(v) 
-            count +=1
-        #add in tuple things into the thing
-        print (sql)
-        print (values)
-        cursor = get_db().cursor()
-        cursor.execute(sql,values)
-        results = cursor.fetchall()
-        print (results)
-    return render_template('dashboard.html', user = username, urls = results, page_name = "Home", tags = tag_results)
 
 
 if __name__ == '__main__' :
