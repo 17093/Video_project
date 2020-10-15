@@ -130,7 +130,6 @@ def dashboard():
         cursor.execute("SELECT  url.id, url.url, url.desc_name, url.desc, users.username, tags.tag_type FROM url JOIN users ON url.uploader=users.id JOIN tags ON url.filter=tags.id ORDER BY url.id DESC ")
         results = cursor.fetchall()
         title_text = "Recent Uploads"
-    
     print (results)
     #fetches all tag types
     cursor2 = get_db().cursor()
